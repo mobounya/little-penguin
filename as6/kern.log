@@ -1,0 +1,50 @@
+May 22 22:07:50 mobounya kernel: [    0.943840] cfg80211: Loading compiled-in X.509 certificates for regulatory database
+May 22 22:07:50 mobounya kernel: [    0.944172] kworker/u2:1 (68) used greatest stack depth: 14736 bytes left
+May 22 22:07:50 mobounya kernel: [    0.944554] cfg80211: Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
+May 22 22:07:50 mobounya kernel: [    0.944766] ALSA device list:
+May 22 22:07:50 mobounya kernel: [    0.944901]   No soundcards found.
+May 22 22:07:50 mobounya kernel: [    0.945073] platform regulatory.0: Direct firmware load for regulatory.db failed with error -2
+May 22 22:07:50 mobounya kernel: [    0.945357] cfg80211: failed to load regulatory.db
+May 22 22:07:50 mobounya kernel: [    1.139587] input: ImExPS/2 Generic Explorer Mouse as /devices/platform/i8042/serio1/input/input5
+May 22 22:07:50 mobounya kernel: [    1.140074] md: Waiting for all devices to be available before autodetect
+May 22 22:07:50 mobounya kernel: [    1.140285] md: If you don't use raid, use raid=noautodetect
+May 22 22:07:50 mobounya kernel: [    1.140472] md: Autodetecting RAID arrays.
+May 22 22:07:50 mobounya kernel: [    1.140627] md: autorun ...
+May 22 22:07:50 mobounya kernel: [    1.140756] md: ... autorun DONE.
+May 22 22:07:50 mobounya kernel: [    1.173716] EXT4-fs (sda6): mounted filesystem with ordered data mode. Quota mode: none.
+May 22 22:07:50 mobounya kernel: [    1.174019] VFS: Mounted root (ext4 filesystem) readonly on device 8:6.
+May 22 22:07:50 mobounya kernel: [    1.178103] devtmpfs: mounted
+May 22 22:07:50 mobounya kernel: [    1.178383] Freeing unused kernel image (initmem) memory: 1276K
+May 22 22:07:50 mobounya kernel: [    1.178595] Write protecting the kernel read-only data: 24576k
+May 22 22:07:50 mobounya kernel: [    1.179049] Freeing unused kernel image (text/rodata gap) memory: 2032K
+May 22 22:07:50 mobounya kernel: [    1.179391] Freeing unused kernel image (rodata/data gap) memory: 1060K
+May 22 22:07:50 mobounya kernel: [    1.179613] Run /sbin/init as init process
+May 22 22:07:50 mobounya kernel: [    1.179769]   with arguments:
+May 22 22:07:50 mobounya kernel: [    1.179770]     /sbin/init
+May 22 22:07:50 mobounya kernel: [    1.179770]   with environment:
+May 22 22:07:50 mobounya kernel: [    1.179771]     HOME=/
+May 22 22:07:50 mobounya kernel: [    1.179771]     TERM=linux
+May 22 22:07:50 mobounya kernel: [    1.179771]     BOOT_IMAGE=/linux-5.18-rc7-thor_kernel
+May 22 22:07:50 mobounya kernel: [    1.208868] usb 1-1: new full-speed USB device number 2 using ohci-pci
+May 22 22:07:50 mobounya kernel: [    1.272667] random: fast init done
+May 22 22:07:50 mobounya kernel: [    1.449436] usb 1-1: New USB device found, idVendor=80ee, idProduct=0021, bcdDevice= 1.00
+May 22 22:07:50 mobounya kernel: [    1.449722] usb 1-1: New USB device strings: Mfr=1, Product=3, SerialNumber=0
+May 22 22:07:50 mobounya kernel: [    1.450006] usb 1-1: Product: USB Tablet
+May 22 22:07:50 mobounya kernel: [    1.450276] usb 1-1: Manufacturer: VirtualBox
+May 22 22:07:50 mobounya kernel: [    1.462340] input: VirtualBox USB Tablet as /devices/pci0000:00/0000:00:06.0/usb1/1-1/1-1:1.0/0003:80EE:0021.0001/input/input6
+May 22 22:07:50 mobounya kernel: [    1.462731] hid-generic 0003:80EE:0021.0001: input,hidraw0: USB HID v1.10 Mouse [VirtualBox USB Tablet] on usb-0000:00:06.0-1/input0
+May 22 22:07:50 mobounya kernel: [    1.745401] stty (78) used greatest stack depth: 13680 bytes left
+May 22 22:07:50 mobounya kernel: [    1.844699] dmesg (79) used greatest stack depth: 13632 bytes left
+May 22 22:07:50 mobounya kernel: [    2.100845] date (93) used greatest stack depth: 13600 bytes left
+May 22 22:07:50 mobounya kernel: [    2.139329] mountpoint (103) used greatest stack depth: 13592 bytes left
+May 22 22:07:50 mobounya kernel: [    2.290689] random: crng init done
+May 22 22:07:50 mobounya kernel: [    2.305941] ip (130) used greatest stack depth: 12272 bytes left
+May 22 22:07:50 mobounya kernel: <30>[    2.470018] udevd[155]: starting version 3.2.11
+May 22 22:07:50 mobounya kernel: <30>[    2.733132] udevd[156]: starting eudev-3.2.11
+May 22 22:07:50 mobounya kernel: [    2.791448] e1000 0000:00:03.0 enp0s3: renamed from eth0
+May 22 22:07:50 mobounya kernel: [    3.932127] Adding 7812092k swap on /dev/sda2.  Priority:1 extents:1 across:7812092k 
+May 22 22:07:50 mobounya kernel: [    3.943125] EXT4-fs (sda6): re-mounted. Quota mode: none.
+May 22 22:07:50 mobounya kernel: [    4.007383] EXT4-fs (sda6): re-mounted. Quota mode: none.
+May 22 22:07:50 mobounya kernel: [    4.064325] EXT4-fs (sda1): mounted filesystem with ordered data mode. Quota mode: none.
+May 22 22:07:50 mobounya kernel: [    5.558247] e1000: enp0s3 NIC Link is Up 1000 Mbps Full Duplex, Flow Control: RX
+May 22 22:07:50 mobounya kernel: [    5.558830] IPv6: ADDRCONF(NETDEV_CHANGE): enp0s3: link becomes ready
