@@ -8,7 +8,7 @@ int main(void)
 {
     int fd;
 
-    fd = open("/sys/kernel/debug/fortytwo/jiffies", O_RDWR);
+    fd = open("/sys/kernel/debug/fortytwo/jiffies", O_RDONLY);
     if (fd == -1) {
         printf("%s\n", strerror(errno));
         return fd;    
