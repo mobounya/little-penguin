@@ -1,0 +1,15 @@
+Jun  3 15:55:13 mobounya kernel: [   45.637929] Cleaning up module.
+Jun  3 15:55:43 mobounya kernel: [   75.775758] usb 1-2: USB disconnect, device number 3
+Jun  3 15:57:07 mobounya kernel: [  159.717779] usb 1-2: new low-speed USB device number 4 using ohci-pci
+Jun  3 15:57:07 mobounya kernel: [  159.978709] usb 1-2: New USB device found, idVendor=046a, idProduct=0180, bcdDevice= 1.03
+Jun  3 15:57:07 mobounya kernel: [  159.978920] usb 1-2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+Jun  3 15:57:07 mobounya kernel: [  159.979100] usb 1-2: Product: wired keyboard
+Jun  3 15:57:07 mobounya kernel: [  159.979224] usb 1-2: Manufacturer:  
+Jun  3 15:57:07 mobounya kernel: [  160.008487] input:   wired keyboard as /devices/pci0000:00/0000:00:06.0/usb1/1-2/1-2:1.0/0003:046A:0180.0004/input/input10
+Jun  3 15:57:07 mobounya kernel: [  160.061032] hid-generic 0003:046A:0180.0004: input,hidraw1: USB HID v1.11 Keyboard [  wired keyboard] on usb-0000:00:06.0-2/input0
+Jun  3 15:57:07 mobounya kernel: [  160.080817] input:   wired keyboard Consumer Control as /devices/pci0000:00/0000:00:06.0/usb1/1-2/1-2:1.1/0003:046A:0180.0005/input/input11
+Jun  3 15:57:08 mobounya kernel: [  160.132856] input:   wired keyboard System Control as /devices/pci0000:00/0000:00:06.0/usb1/1-2/1-2:1.1/0003:046A:0180.0005/input/input12
+Jun  3 15:57:08 mobounya kernel: [  160.133293] hid-generic 0003:046A:0180.0005: input,hidraw2: USB HID v1.11 Device [  wired keyboard] on usb-0000:00:06.0-2/input1
+Jun  3 15:57:08 mobounya kernel: [  160.140821] Hello world!
+Jun  3 15:57:24 mobounya kernel: [  176.229845] Cleaning up module.
+Jun  3 15:59:54 mobounya kernel: [  327.110438] usb 1-2: USB disconnect, device number 4
