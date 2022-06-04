@@ -94,12 +94,47 @@ char proc_file_buffer[PAGE_SIZE];
 size_t proc_file_buffer_capacity = PAGE_SIZE;
 size_t proc_file_buffer_size = 0;
 
+static char *prepend_path(char *prepend_path, char *path)
+{
+	char *tmp;
+
+	if (strcmp(prepend_path, "/") == 0)
+		return kstrdup(path, GFP_KERNEL);
+	if (strcmp(path, "/") == 0)
+		return kstrdup(prepend_path, GFP_KERNEL);
+	else
+	{
+		tmp = kmalloc(sizeof(char) * strlen(prepend_path) + strlen(path) + 1, GFP_KERNEL);
+		strcpy(tmp, prepend_path);
+		return strcat(tmp, path);
+	}
+}
+
+static char *get_mount_full_path(struct mount *mnt)
+{
+	char *buffer;
+	char *buffer2;
+	char *path;
+	char *parent_path;
+	char *full_path;
+
+	buffer = kmalloc(sizeof(char) * 256, GFP_KERNEL);
+	buffer2 = kmalloc(sizeof(char) * 256, GFP_KERNEL);
+
+	path = dentry_path_raw(mnt->mnt_mountpoint, buffer, 256);
+	parent_path = dentry_path_raw(mnt->mnt_parent->mnt_mountpoint, buffer2, 256);
+
+	full_path = prepend_path(parent_path, path);
+	kfree(buffer);
+	kfree(buffer2);
+	return full_path;
+}
+
 ssize_t my_proc_read(struct file *fp, char __user *user, size_t size, loff_t *offs)
 {
 	struct mount *current_mnt;
 	char *path;
-	char *buffer;
-	size_t offset = 0;
+	size_t offset = 0;ls
 	int name_len = 0;
 	unsigned int i;
 
@@ -112,8 +147,7 @@ ssize_t my_proc_read(struct file *fp, char __user *user, size_t size, loff_t *of
 
 	list_for_each_entry(current_mnt, &current->nsproxy->mnt_ns->list, mnt_list)
 	{
-		buffer = kmalloc(sizeof(char) * 256, GFP_KERNEL);
-		path = dentry_path_raw(current_mnt->mnt_mountpoint, buffer, 256);
+		path = get_mount_full_path(current_mnt);
 
 		name_len = strlen(current_mnt->mnt_devname);
 		memcpy(proc_file_buffer + offset, current_mnt->mnt_devname, name_len);
@@ -129,17 +163,9 @@ ssize_t my_proc_read(struct file *fp, char __user *user, size_t size, loff_t *of
 		memcpy(proc_file_buffer + offset, path, strlen(path));
 		offset += strlen(path);
 
-		memcpy(proc_file_buffer + offset, "                    ", 20);
-		offset += 20;
-
-		buffer = kmalloc(sizeof(char) * 256, GFP_KERNEL);
-		path = dentry_path_raw(current_mnt->mnt_parent->mnt_mountpoint, buffer, 256);
-
-		memcpy(proc_file_buffer + offset, path, strlen(path));
-		offset += strlen(path);
-
 		memcpy(proc_file_buffer + offset, "\n", 1);
 		offset += 1;
+		kfree(path);
 	}
 	proc_file_buffer_size += offset;
 	return simple_read_from_buffer(user, size, offs, proc_file_buffer, offset);
