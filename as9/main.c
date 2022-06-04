@@ -61,18 +61,18 @@ struct mount
 	int mnt_count;
 	int mnt_writers;
 #endif
-	struct list_head mnt_mounts;   /* list of children, anchored here */
-	struct list_head mnt_child;	   /* and going through their mnt_child */
+	struct list_head mnt_mounts;	 /* list of children, anchored here */
+	struct list_head mnt_child;		 /* and going through their mnt_child */
 	struct list_head mnt_instance; /* mount instance on sb->s_mounts */
-	const char *mnt_devname;	   /* Name of device e.g. /dev/dsk/hda1 */
+	const char *mnt_devname;			 /* Name of device e.g. /dev/dsk/hda1 */
 	struct list_head mnt_list;
-	struct list_head mnt_expire;	 /* link in fs-specific expiry list */
-	struct list_head mnt_share;		 /* circular list of shared mounts */
+	struct list_head mnt_expire;		 /* link in fs-specific expiry list */
+	struct list_head mnt_share;			 /* circular list of shared mounts */
 	struct list_head mnt_slave_list; /* list of slave mounts */
-	struct list_head mnt_slave;		 /* slave list entry */
-	struct mount *mnt_master;		 /* slave is on master->mnt_slave_list */
-	struct mnt_namespace *mnt_ns;	 /* containing namespace */
-	struct mountpoint *mnt_mp;		 /* where is it mounted */
+	struct list_head mnt_slave;			 /* slave list entry */
+	struct mount *mnt_master;				 /* slave is on master->mnt_slave_list */
+	struct mnt_namespace *mnt_ns;		 /* containing namespace */
+	struct mountpoint *mnt_mp;			 /* where is it mounted */
 	union
 	{
 		struct hlist_node mnt_mp_list; /* list mounts with the same mountpoint */
@@ -83,54 +83,40 @@ struct mount
 	struct fsnotify_mark_connector __rcu *mnt_fsnotify_marks;
 	__u32 mnt_fsnotify_mask;
 #endif
-	int mnt_id;			 /* mount identifier */
-	int mnt_group_id;	 /* peer group identifier */
+	int mnt_id;					 /* mount identifier */
+	int mnt_group_id;		 /* peer group identifier */
 	int mnt_expiry_mark; /* true if marked for expiry */
 	struct hlist_head mnt_pins;
 	struct hlist_head mnt_stuck_children;
 } __randomize_layout;
 
 char proc_file_buffer[PAGE_SIZE];
-
-ssize_t my_proc_write(struct file *fp, const char __user *user, size_t size, loff_t *offs)
-{
-	ssize_t res;
-
-	res = simple_write_to_buffer(proc_file_buffer, size, offs, user, size);
-	if (res > 0)
-		proc_file_buffer[res] = 0x0;
-	return res;
-}
+size_t proc_file_buffer_capacity = PAGE_SIZE;
+size_t proc_file_buffer_size = 0;
 
 ssize_t my_proc_read(struct file *fp, char __user *user, size_t size, loff_t *offs)
-{
-	size_t ret;
-	ret = simple_read_from_buffer(user, size, offs, proc_file_buffer, PAGE_SIZE);
-	return ret;
-}
-
-struct proc_ops proc_fops = {
-	.proc_write = my_proc_write,
-	.proc_read = my_proc_read,
-};
-
-int hello_init(void)
 {
 	struct mount *current_mnt;
 	char *path;
 	char *buffer;
-	int offset = 0;
+	size_t offset = 0;
 	int name_len = 0;
 	unsigned int i;
-	proc_create("mymounts", S_IRUSR | S_IWUSR | S_IROTH | S_IRGRP, NULL, &proc_fops);
+
+	if (proc_file_buffer_size > 0)
+	{
+		if (*offs >= proc_file_buffer_size)
+			return 0;
+		return simple_read_from_buffer(user, size, offs, proc_file_buffer, PAGE_SIZE);
+	}
 
 	list_for_each_entry(current_mnt, &current->nsproxy->mnt_ns->list, mnt_list)
 	{
 		buffer = kmalloc(sizeof(char) * 256, GFP_KERNEL);
 		path = dentry_path_raw(current_mnt->mnt_mountpoint, buffer, 256);
 
-		name_len = strlen(current_mnt->mnt_mountpoint->d_name.name);
-		memcpy(proc_file_buffer + offset, current_mnt->mnt_mountpoint->d_name.name, name_len);
+		name_len = strlen(current_mnt->mnt_devname);
+		memcpy(proc_file_buffer + offset, current_mnt->mnt_devname, name_len);
 		offset += name_len;
 
 		// Print number of spaces (padding) depending on how long the name is.
@@ -142,11 +128,25 @@ int hello_init(void)
 
 		memcpy(proc_file_buffer + offset, path, strlen(path));
 		offset += strlen(path);
+
 		memcpy(proc_file_buffer + offset, "\n", 1);
 		offset += 1;
 
 		kfree(buffer);
 	}
+	proc_file_buffer_size += offset;
+
+	return simple_read_from_buffer(user, size, offs, proc_file_buffer, offset);
+}
+
+struct proc_ops proc_fops = {
+		.proc_read = my_proc_read,
+};
+
+int hello_init(void)
+{
+	proc_create("mymounts", S_IRUSR | S_IWUSR | S_IROTH | S_IRGRP, NULL, &proc_fops);
+
 	return 0;
 }
 
