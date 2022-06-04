@@ -129,13 +129,19 @@ ssize_t my_proc_read(struct file *fp, char __user *user, size_t size, loff_t *of
 		memcpy(proc_file_buffer + offset, path, strlen(path));
 		offset += strlen(path);
 
+		memcpy(proc_file_buffer + offset, "                    ", 20);
+		offset += 20;
+
+		buffer = kmalloc(sizeof(char) * 256, GFP_KERNEL);
+		path = dentry_path_raw(current_mnt->mnt_parent->mnt_mountpoint, buffer, 256);
+
+		memcpy(proc_file_buffer + offset, path, strlen(path));
+		offset += strlen(path);
+
 		memcpy(proc_file_buffer + offset, "\n", 1);
 		offset += 1;
-
-		kfree(buffer);
 	}
 	proc_file_buffer_size += offset;
-
 	return simple_read_from_buffer(user, size, offs, proc_file_buffer, offset);
 }
 
