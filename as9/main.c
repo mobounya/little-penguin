@@ -38,7 +38,7 @@ struct mnt_namespace
 	struct user_namespace *user_ns;
 	struct ucounts *ucounts;
 	u64 seq; /* Sequence number to prevent loops */
-	wait_queue_head_t poll;
+	wait_queue_head_t pmnt_nsoll;
 	u64 event;
 	unsigned int mounts; /* # of mounts in the namespace */
 	unsigned int pending_mounts;
@@ -130,11 +130,13 @@ static char *get_mount_full_path(struct mount *mnt)
 	return full_path;
 }
 
+// #define offsetof(TYPE, MEMBER) ((size_t) & ((TYPE *)0)->MEMBER)
+
 ssize_t my_proc_read(struct file *fp, char __user *user, size_t size, loff_t *offs)
 {
 	struct mount *current_mnt;
 	char *path;
-	size_t offset = 0;ls
+	size_t offset = 0;
 	int name_len = 0;
 	unsigned int i;
 
@@ -147,25 +149,28 @@ ssize_t my_proc_read(struct file *fp, char __user *user, size_t size, loff_t *of
 
 	list_for_each_entry(current_mnt, &current->nsproxy->mnt_ns->list, mnt_list)
 	{
-		path = get_mount_full_path(current_mnt);
-
-		name_len = strlen(current_mnt->mnt_devname);
-		memcpy(proc_file_buffer + offset, current_mnt->mnt_devname, name_len);
-		offset += name_len;
-
-		// Print number of spaces (padding) depending on how long the name is.
-		for (i = 0; i < NUMBER_OF_SPACES - name_len; i++)
+		if (strcmp(current_mnt->mnt_devname, "rootfs"))
 		{
-			memcpy(proc_file_buffer + offset, " ", 1);
+			path = get_mount_full_path(current_mnt);
+
+			name_len = strlen(current_mnt->mnt_devname);
+			memcpy(proc_file_buffer + offset, current_mnt->mnt_devname, name_len);
+			offset += name_len;
+
+			// Print number of spaces (padding) depending on how long the name is.
+			for (i = 0; i < NUMBER_OF_SPACES - name_len; i++)
+			{
+				memcpy(proc_file_buffer + offset, " ", 1);
+				offset += 1;
+			}
+
+			memcpy(proc_file_buffer + offset, path, strlen(path));
+			offset += strlen(path);
+
+			memcpy(proc_file_buffer + offset, "\n", 1);
 			offset += 1;
+			kfree(path);
 		}
-
-		memcpy(proc_file_buffer + offset, path, strlen(path));
-		offset += strlen(path);
-
-		memcpy(proc_file_buffer + offset, "\n", 1);
-		offset += 1;
-		kfree(path);
 	}
 	proc_file_buffer_size += offset;
 	return simple_read_from_buffer(user, size, offs, proc_file_buffer, offset);
@@ -189,3 +194,5 @@ void hello_cleanup(void)
 
 module_init(hello_init);
 module_exit(hello_cleanup);
+
+// 1246823614
