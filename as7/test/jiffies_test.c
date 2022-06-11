@@ -14,7 +14,7 @@ int main(void)
         return fd;    
     } else {
         char buffer[10] = { '\0' };
-        int ret = read(fd, buffer, 1);
-        printf("%d\n", ret);
+       	ssize_t ret = read(fd, buffer, 1);
+        printf("%zu\n", ret);
     }
 }

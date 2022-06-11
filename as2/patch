@@ -1,11 +1,11 @@
---- linux-5.18-rc7/Makefile	2022-05-21 01:41:19.111012269 +0100
-+++ linux-5.18-rc7/Makefile.orig	2022-05-21 01:41:06.434012031 +0100
+--- linux-5.18-thor_kernel/Makefile.orig	2022-06-07 14:03:13.518046314 +0100
++++ linux-5.18-thor_kernel/Makefile	2022-06-07 14:03:31.758047755 +0100
 @@ -2,7 +2,7 @@
  VERSION = 5
  PATCHLEVEL = 18
  SUBLEVEL = 0
--EXTRAVERSION = -thor_kernel
-+EXTRAVERSION = -rc7
+-EXTRAVERSION =
++EXTRAVERSION = -thor_kernel
  NAME = Superb Owl
  
  # *DOCUMENTATION*

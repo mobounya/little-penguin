@@ -14,20 +14,16 @@ MODULE_DESCRIPTION("A misc device driver");
 ssize_t misc_dev_read(struct file *filp, char __user *buf,
                     size_t count, loff_t *f_pos)
 {
-    size_t i;
     char *login = "mobounya";
-    printk("Reading from penguin misc device...");
-    for (i = 0; i < count; i++)
-        buf[i] = login[i];
-    return i;
+    size_t size = 8;
+    return simple_read_from_buffer(buf, count, f_pos, login, size);
 }
 
 ssize_t misc_dev_write(struct file *file, const char __user *buf,
                size_t len, loff_t *ppos)
 {
-    printk("Writing to penguin misc device...");
     if (strcmp(buf, "mobounya") == 0)
-        return 9;
+        return 8;
     else
         return -1; 
 }
@@ -59,7 +55,7 @@ int hello_init(void)
 
 void hello_cleanup(void)
 {
-    printk("Cleaning up device module.\n");
+    printk("Cleaning up misc device module.\n");
     misc_deregister(&misc_dev);
 }
 

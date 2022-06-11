@@ -1,0 +1,36 @@
+Jun 07 17:39:02 +01:00 (none)  Mounting virtual file systems: /run /proc /sys OK
+Jun 07 17:39:02 +01:00 (none)  Bringing up the loopback interface... OK
+Jun 07 17:39:02 +01:00 (none)  Setting hostname to mobounya... OK
+Jun 07 17:39:02 +01:00 mobounya  Populating /dev with device nodes...  OK
+Jun 07 15:14:30 +01:00 mobounya  Activating all swap files/partitions... OK
+Jun 07 15:14:30 +01:00 mobounya  Mounting root file system in read-only mode...  OK
+Jun 07 15:14:30 +01:00 mobounya  Checking file systems... OK
+Jun 07 15:14:30 +01:00 mobounya  Remounting root file system in read-write mode... OK
+Jun 07 15:14:30 +01:00 mobounya  Mounting remaining file systems... OK
+Jun 07 15:14:30 +01:00 mobounya  Cleaning file systems: /tmp OK
+Jun 07 15:14:30 +01:00 mobounya  Retrying failed uevents, if any... OK
+Jun 07 15:14:31 +01:00 mobounya  Setting up Linux console... OK
+Jun 07 15:14:31 +01:00 mobounya  Starting system log daemon... OK
+Jun 07 15:14:31 +01:00 mobounya  Starting kernel log daemon... OK
+Jun 07 15:14:31 +01:00 mobounya  Bringing up the enp0s3 interface... OK
+Jun 07 15:14:31 +01:00 mobounya  Adding IPv4 address 10.13.100.100 to the enp0s3 interface... OK
+Jun 07 15:14:31 +01:00 mobounya  Adding default gateway 10.13.254.254 to the enp0s3 interface... OK
+--------
+Jun 07 17:40:31 +01:00 (none)  Mounting virtual file systems: /run /proc /sys OK
+Jun 07 17:40:31 +01:00 (none)  Bringing up the loopback interface... OK
+Jun 07 17:40:31 +01:00 (none)  Setting hostname to mobounya... OK
+Jun 07 17:40:31 +01:00 mobounya  Populating /dev with device nodes...  OK
+Jun 07 15:15:15 +01:00 mobounya  Activating all swap files/partitions... OK
+Jun 07 15:15:15 +01:00 mobounya  Mounting root file system in read-only mode...  OK
+Jun 07 15:15:15 +01:00 mobounya  Checking file systems... OK
+Jun 07 15:15:15 +01:00 mobounya  Remounting root file system in read-write mode... OK
+Jun 07 15:15:15 +01:00 mobounya  Mounting remaining file systems... OK
+Jun 07 15:15:15 +01:00 mobounya  Cleaning file systems: /tmp OK
+Jun 07 15:15:15 +01:00 mobounya  Retrying failed uevents, if any... OK
+Jun 07 15:15:16 +01:00 mobounya  Setting up Linux console... OK
+Jun 07 15:15:16 +01:00 mobounya  Starting system log daemon... OK
+Jun 07 15:15:16 +01:00 mobounya  Starting kernel log daemon... OK
+Jun 07 15:15:16 +01:00 mobounya  Bringing up the enp0s3 interface... OK
+Jun 07 15:15:16 +01:00 mobounya  Adding IPv4 address 10.13.100.100 to the enp0s3 interface... OK
+Jun 07 15:15:16 +01:00 mobounya  Adding default gateway 10.13.254.254 to the enp0s3 interface... OK
+--------

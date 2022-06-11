@@ -1,1 +1,1 @@
-SUBSYSTEMS=="input", ATTRS{name}=="* keyboard", ACTION=="add", RUN+="/bin/device_added.sh"
+ENV{ID_INPUT_KEY}!="?", ENV{ID_MODEL}=="*Keyboard*", ACTION=="add", RUN+="/bin/device_added.sh"

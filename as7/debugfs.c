@@ -29,18 +29,16 @@ struct dentry *fortytwo_dir;
 ssize_t debugfs_id_read(struct file *filp, char __user *buf,
                     size_t count, loff_t *f_pos)
 {
-    size_t i;
     char *login = "mobounya";
-    for (i = 0; i < count; i++)
-        buf[i] = login[i];
-    return i;
+    size_t size = 8;
+    return simple_read_from_buffer(buf, count, f_pos, login, size);
 }
 
 ssize_t debugfs_id_write(struct file *file, const char __user *buf,
                size_t len, loff_t *ppos)
 {
     if (strcmp(buf, "mobounya") == 0)
-        return 9;
+        return 8;
     else
         return -1; 
 }
@@ -54,34 +52,30 @@ ssize_t debugfs_jiffies_read(struct file *filp, char __user *buf,
 ssize_t debugfs_foo_read(struct file *filp, char __user *buf,
                     size_t count, loff_t *f_pos)
 {
-    size_t i;
-
+    size_t ret;
     spinlock_t foo_lock;
+
     spin_lock_init(&foo_lock);
 
     spin_lock(&foo_lock);
-    for (i = 0; i < count && i < foo_buffer_size; i++)
-        buf[i] = foo_data_buffer[i];
+    ret = simple_read_from_buffer(buf, count, f_pos, foo_data_buffer, foo_buffer_size);
     spin_unlock(&foo_lock);
-    return i;
+    return ret;
 }
 
 ssize_t debugfs_foo_write(struct file *file, const char __user *buf,
                size_t len, loff_t *ppos)
 {
-    size_t i;
+    size_t ret;
 
     spinlock_t foo_lock;
     spin_lock_init(&foo_lock);
 
     spin_lock(&foo_lock);
-    if (len > PAGE_SIZE)
-        len = PAGE_SIZE;
-    foo_buffer_size = len;
-    for (i = 0; i < len; i++)
-        foo_data_buffer[i] = buf[i];
+    ret = simple_write_to_buffer(foo_data_buffer, foo_buffer_capacity, ppos, buf    , len);
+    foo_buffer_size = ret;
     spin_unlock(&foo_lock);
-    return i;
+    return ret;
 }
 
 struct file_operations id_fops = {
