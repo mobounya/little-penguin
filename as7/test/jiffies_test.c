@@ -13,8 +13,8 @@ int main(void)
         printf("%s\n", strerror(errno));
         return fd;    
     } else {
-        char buffer[10] = { '\0' };
-       	ssize_t ret = read(fd, buffer, 1);
-        printf("%zu\n", ret);
+        char buffer[100] = { '\0' };
+       	ssize_t ret = read(fd, buffer, 100);
+        printf("buffer == %s\n", buffer);
     }
 }

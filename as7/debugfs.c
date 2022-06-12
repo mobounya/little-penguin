@@ -46,7 +46,10 @@ ssize_t debugfs_id_write(struct file *file, const char __user *buf,
 ssize_t debugfs_jiffies_read(struct file *filp, char __user *buf,
                     size_t count, loff_t *f_pos)
 {
-    return jiffies;
+    char buffer[100] = { '\0' };
+    int ret;
+    ret = snprintf(buffer, 100, "%ld", jiffies);
+    return simple_read_from_buffer(buf, count, f_pos, buffer, ret);
 }
 
 ssize_t debugfs_foo_read(struct file *filp, char __user *buf,

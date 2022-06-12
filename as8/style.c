@@ -5,7 +5,6 @@
 #include <linux/fs.h>
 #include <linux/slab.h>
 
-// Dont have a license, LOL
 MODULE_LICENSE("LICENSE");
 MODULE_AUTHOR("Louis Solofrizzo <louis@ne02ptzero.me>");
 MODULE_DESCRIPTION("Useless module");
@@ -20,7 +19,7 @@ ssize_t myfd_write(struct file *fp, const char __user *user, size_t size, loff_t
 
 	res = simple_write_to_buffer(file_content_buffer, size, offs, user, size);
 	if (res > 0)
-		// 0x0 = ’\0’
+		// 0x0 = '\0'
 		file_content_buffer[res] = 0x0;
 	return res;
 }
@@ -30,9 +29,6 @@ ssize_t myfd_read(struct file *fp, char __user *user, size_t size, loff_t *offs)
 	long t;
 	size_t i;
 
-	/***************
-	* Malloc like a boss
-	***************/
 
 	tmp = kmalloc(sizeof(char) * PAGE_SIZE * 2, GFP_KERNEL);
 	t = strlen(file_content_buffer);
