@@ -121,16 +121,21 @@ static char *get_mount_full_path(struct mount *mnt)
 	buffer = kmalloc(sizeof(char) * 256, GFP_KERNEL);
 	buffer2 = kmalloc(sizeof(char) * 256, GFP_KERNEL);
 
+	if (buffer == NULL || buffer2 == NULL)
+		return NULL;
+
 	path = dentry_path_raw(mnt->mnt_mountpoint, buffer, 256);
 	parent_path = dentry_path_raw(mnt->mnt_parent->mnt_mountpoint, buffer2, 256);
 
-	full_path = prepend_path(parent_path, path);
+	if (path != NULL && parent_path != NULL)
+		full_path = prepend_path(parent_path, path);
+	else
+		full_path = NULL;
+
 	kfree(buffer);
 	kfree(buffer2);
 	return full_path;
 }
-
-// #define offsetof(TYPE, MEMBER) ((size_t) & ((TYPE *)0)->MEMBER)
 
 ssize_t my_proc_read(struct file *fp, char __user *user, size_t size, loff_t *offs)
 {
@@ -152,6 +157,9 @@ ssize_t my_proc_read(struct file *fp, char __user *user, size_t size, loff_t *of
 		if (strcmp(current_mnt->mnt_devname, "rootfs"))
 		{
 			path = get_mount_full_path(current_mnt);
+
+			if (path == NULL)
+				return -1;
 
 			name_len = strlen(current_mnt->mnt_devname);
 			memcpy(proc_file_buffer + offset, current_mnt->mnt_devname, name_len);
@@ -182,7 +190,8 @@ struct proc_ops proc_fops = {
 
 int hello_init(void)
 {
-	proc_create("mymounts", S_IRUSR | S_IWUSR | S_IROTH | S_IRGRP, NULL, &proc_fops);
+	if (proc_create("mymounts", S_IRUSR | S_IWUSR | S_IROTH | S_IRGRP, NULL, &proc_fops) == NULL)
+		return 1;
 
 	return 0;
 }
@@ -194,5 +203,3 @@ void hello_cleanup(void)
 
 module_init(hello_init);
 module_exit(hello_cleanup);
-
-// 1246823614
