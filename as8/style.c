@@ -14,7 +14,8 @@ char file_content_buffer[PAGE_SIZE];
 static ssize_t myfd_read(struct file *fp, char __user *user, size_t size, loff_t *offs);
 static ssize_t myfd_write(struct file *fp, const char __user *user, size_t size, loff_t *offs);
 
-ssize_t myfd_write(struct file *fp, const char __user *user, size_t size, loff_t *offs) {
+ssize_t myfd_write(struct file *fp, const char __user *user, size_t size, loff_t *offs)
+{
 	ssize_t res;
 
 	res = simple_write_to_buffer(file_content_buffer, size, offs, user, size);
@@ -24,7 +25,7 @@ ssize_t myfd_write(struct file *fp, const char __user *user, size_t size, loff_t
 	return res;
 }
 
-ssize_t myfd_read(struct file *fp, char __user *user, size_t size, loff_t *offs) {
+ssize_t myfd_read(struct file *fp, char __user *user, size_t size, loff_t *offs){
 	char *tmp;
 	long t;
 	size_t i;
@@ -52,14 +53,16 @@ static struct miscdevice myfd_device = {
 	.fops = &myfd_fops
 };
 
-static int __init myfd_init(void) {
+static int __init myfd_init(void)
+{
 	int retval;
 
 	retval = misc_register(&(*(&(myfd_device))));
 	return retval;
 }
 
-static void __exit myfd_cleanup(void) {
+static void __exit myfd_cleanup(void)
+{
 	misc_deregister(&myfd_device);
 }
 
