@@ -11,10 +11,13 @@ MODULE_DESCRIPTION("Useless module");
 
 char file_content_buffer[PAGE_SIZE];
 
-static ssize_t myfd_read(struct file *fp, char __user *user, size_t size, loff_t *offs);
-static ssize_t myfd_write(struct file *fp, const char __user *user, size_t size, loff_t *offs);
+static ssize_t myfd_read(struct file *fp, char __user *user, size_t size,
+			 loff_t *offs);
+static ssize_t myfd_write(struct file *fp, const char __user *user,
+			  size_t size, loff_t *offs);
 
-ssize_t myfd_write(struct file *fp, const char __user *user, size_t size, loff_t *offs)
+ssize_t myfd_write(struct file *fp, const char __user *user, size_t size,
+		   loff_t *offs)
 {
 	ssize_t res;
 
@@ -25,11 +28,12 @@ ssize_t myfd_write(struct file *fp, const char __user *user, size_t size, loff_t
 	return res;
 }
 
-ssize_t myfd_read(struct file *fp, char __user *user, size_t size, loff_t *offs){
+ssize_t myfd_read(struct file *fp, char __user *user, size_t size,
+		  loff_t *offs)
+{
 	char *tmp;
 	long t;
 	size_t i;
-
 
 	tmp = kmalloc(sizeof(char) * PAGE_SIZE * 2, GFP_KERNEL);
 	t = strlen(file_content_buffer);
@@ -42,15 +46,15 @@ ssize_t myfd_read(struct file *fp, char __user *user, size_t size, loff_t *offs)
 }
 
 static struct file_operations myfd_fops = {
-	.owner = THIS_MODULE, 
-	.read = &myfd_read,
-	.write = &myfd_write
+    .owner = THIS_MODULE,
+    .read = &myfd_read,
+    .write = &myfd_write,
 };
 
 static struct miscdevice myfd_device = {
-	.minor = MISC_DYNAMIC_MINOR,
-	.name = "reverse",
-	.fops = &myfd_fops
+    .minor = MISC_DYNAMIC_MINOR,
+    .name = "reverse",
+    .fops = &myfd_fops,
 };
 
 static int __init myfd_init(void)
