@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-2.0-or-later
+
 #include <linux/module.h>
 #include <linux/kernel.h>
 #include <linux/init.h>
@@ -24,8 +26,7 @@ MODULE_LICENSE("GPL");
 MODULE_AUTHOR("mobounya");
 MODULE_DESCRIPTION("Print all mount points");
 
-struct mnt_namespace
-{
+struct mnt_namespace {
 	struct ns_common ns;
 	struct mount *root;
 	/*
@@ -44,14 +45,12 @@ struct mnt_namespace
 	unsigned int pending_mounts;
 } __randomize_layout;
 
-struct mount
-{
+struct mount {
 	struct hlist_node mnt_hash;
 	struct mount *mnt_parent;
 	struct dentry *mnt_mountpoint;
 	struct vfsmount mnt;
-	union
-	{
+	union {
 		struct rcu_head mnt_rcu;
 		struct llist_node mnt_llist;
 	};
@@ -73,8 +72,7 @@ struct mount
 	struct mount *mnt_master;				 /* slave is on master->mnt_slave_list */
 	struct mnt_namespace *mnt_ns;		 /* containing namespace */
 	struct mountpoint *mnt_mp;			 /* where is it mounted */
-	union
-	{
+	union {
 		struct hlist_node mnt_mp_list; /* list mounts with the same mountpoint */
 		struct hlist_node mnt_umount;
 	};
@@ -92,7 +90,7 @@ struct mount
 
 char proc_file_buffer[PAGE_SIZE];
 size_t proc_file_buffer_capacity = PAGE_SIZE;
-size_t proc_file_buffer_size = 0;
+size_t proc_file_buffer_size;
 
 static char *prepend_path(char *prepend_path, char *path)
 {
@@ -102,12 +100,9 @@ static char *prepend_path(char *prepend_path, char *path)
 		return kstrdup(path, GFP_KERNEL);
 	if (strcmp(path, "/") == 0)
 		return kstrdup(prepend_path, GFP_KERNEL);
-	else
-	{
-		tmp = kmalloc(sizeof(char) * strlen(prepend_path) + strlen(path) + 1, GFP_KERNEL);
-		strcpy(tmp, prepend_path);
-		return strcat(tmp, path);
-	}
+	tmp = kmalloc(sizeof(char) * strlen(prepend_path) + strlen(path) + 1, GFP_KERNEL);
+	strcpy(tmp, prepend_path);
+	return strcat(tmp, path);
 }
 
 static char *get_mount_full_path(struct mount *mnt)
@@ -145,17 +140,14 @@ ssize_t my_proc_read(struct file *fp, char __user *user, size_t size, loff_t *of
 	int name_len = 0;
 	unsigned int i;
 
-	if (proc_file_buffer_size > 0)
-	{
+	if (proc_file_buffer_size > 0) {
 		if (*offs >= proc_file_buffer_size)
 			return 0;
 		return simple_read_from_buffer(user, size, offs, proc_file_buffer, PAGE_SIZE);
 	}
 
-	list_for_each_entry(current_mnt, &current->nsproxy->mnt_ns->list, mnt_list)
-	{
-		if (strcmp(current_mnt->mnt_devname, "rootfs"))
-		{
+	list_for_each_entry(current_mnt, &current->nsproxy->mnt_ns->list, mnt_list) {
+		if (strcmp(current_mnt->mnt_devname, "rootfs")) {
 			path = get_mount_full_path(current_mnt);
 
 			if (path == NULL)
@@ -166,8 +158,7 @@ ssize_t my_proc_read(struct file *fp, char __user *user, size_t size, loff_t *of
 			offset += name_len;
 
 			// Print number of spaces (padding) depending on how long the name is.
-			for (i = 0; i < NUMBER_OF_SPACES - name_len; i++)
-			{
+			for (i = 0; i < NUMBER_OF_SPACES - name_len; i++) {
 				memcpy(proc_file_buffer + offset, " ", 1);
 				offset += 1;
 			}
@@ -184,8 +175,8 @@ ssize_t my_proc_read(struct file *fp, char __user *user, size_t size, loff_t *of
 	return simple_read_from_buffer(user, size, offs, proc_file_buffer, offset);
 }
 
-struct proc_ops proc_fops = {
-		.proc_read = my_proc_read,
+const struct proc_ops proc_fops = {
+	.proc_read = my_proc_read,
 };
 
 int hello_init(void)
