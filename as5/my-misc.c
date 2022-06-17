@@ -25,8 +25,12 @@ ssize_t misc_dev_read(struct file *filp, char __user *buf,
 ssize_t misc_dev_write(struct file *file, const char __user *buf,
 			size_t len, loff_t *ppos)
 {
-	if (strcmp(buf, "mobounya") == 0)
-		return 8;
+	char buffer[9] = { '\0' };
+	ssize_t ret;
+
+	ret = simple_write_to_buffer(buffer, 8, ppos, buf, len);
+	if (strcmp("mobounya", buffer) == 0)
+		return ret;
 	else
 		return -1;
 }
