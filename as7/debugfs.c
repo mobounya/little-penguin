@@ -13,14 +13,14 @@
 #include <linux/slab.h>
 #include <linux/kernel.h>
 
-#include <linux/spinlock.h>
 #include <linux/syscalls.h>
-
+#include <linux/mutex.h>
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("mobounya");
 MODULE_DESCRIPTION("A debugfs module");
 
+DEFINE_MUTEX(foo_lock);
 
 char foo_data_buffer[PAGE_SIZE] = { '\0' };
 size_t foo_buffer_capacity = PAGE_SIZE;
@@ -60,13 +60,10 @@ ssize_t debugfs_foo_read(struct file *filp, char __user *buf,
 			size_t count, loff_t *f_pos)
 {
 	size_t ret;
-	spinlock_t foo_lock;
 
-	spin_lock_init(&foo_lock);
-
-	spin_lock(&foo_lock);
+	mutex_lock(&foo_lock);
 	ret = simple_read_from_buffer(buf, count, f_pos, foo_data_buffer, foo_buffer_size);
-	spin_unlock(&foo_lock);
+	mutex_unlock(&foo_lock);
 	return ret;
 }
 
@@ -74,13 +71,11 @@ ssize_t debugfs_foo_write(struct file *file, const char __user *buf,
 			size_t len, loff_t *ppos)
 {
 	size_t ret;
-	spinlock_t foo_lock;
 
-	spin_lock_init(&foo_lock);
-	spin_lock(&foo_lock);
+	mutex_lock(&foo_lock);
 	ret = simple_write_to_buffer(foo_data_buffer, foo_buffer_capacity, ppos, buf, len);
 	foo_buffer_size = ret;
-	spin_unlock(&foo_lock);
+	mutex_unlock(&foo_lock);
 	return ret;
 }
 
@@ -118,7 +113,6 @@ int hello_init(void)
 		return 1;
 	return 0;
 }
-
 
 void hello_cleanup(void)
 {
