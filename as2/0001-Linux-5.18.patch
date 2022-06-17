@@ -1,7 +1,9 @@
 From 4b0986a3613c92f4ec1bdc7f60ec66fea135991f Mon Sep 17 00:00:00 2001
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Mohamed amine Bounya <amine.bounya20@gmail.com>
 Date: Sun, 22 May 2022 09:52:31 -1000
 Subject: [PATCH] Linux 5.18
+
+change EXTRAVERSION field to -thor_kernel
 
 Signed-off-by: Mohamed amine Bounya <amine.bounya20@gmail.com>
 ---
