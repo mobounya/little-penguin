@@ -36,7 +36,7 @@ const struct file_operations fops = {
 		.write = misc_dev_write,
 };
 
-const struct miscdevice misc_dev = {
+struct miscdevice misc_dev = {
 		.minor = MISC_DYNAMIC_MINOR,
 		.name = "fortytwo",
 		.fops = &fops,

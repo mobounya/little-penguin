@@ -15,6 +15,6 @@ int main(void)
     } else {
         char buffer[100] = { '\0' };
        	ssize_t ret = read(fd, buffer, 100);
-        printf("buffer == %s\n", buffer);
+        printf("%s\n", buffer);
     }
 }
