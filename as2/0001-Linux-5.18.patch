@@ -21,8 +21,7 @@ index 5033c0577c6d..7d5b0bfe7960 100644
 -EXTRAVERSION = -rc7
 +EXTRAVERSION =
  NAME = Superb Owl
- 
- # *DOCUMENTATION*
--- 
-2.24.3 (Apple Git-128)
 
+ # *DOCUMENTATION*
+--
+2.24.3 (Apple Git-128)
