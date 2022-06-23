@@ -32,7 +32,7 @@ ssize_t misc_dev_write(struct file *file, const char __user *buf,
 	if (strcmp("mobounya", buffer) == 0)
 		return ret;
 	else
-		return -1;
+		return (-EINVAL);
 }
 
 const struct file_operations fops = {
