@@ -47,7 +47,7 @@ ssize_t debugfs_id_write(struct file *file, const char __user *buf,
 	if (strcmp("mobounya", buffer) == 0)
 		return ret;
 	else
-		return -1;
+		return -(EINVAL);
 }
 
 ssize_t debugfs_jiffies_read(struct file *filp, char __user *buf,
